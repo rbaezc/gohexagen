@@ -20,15 +20,28 @@ Go applications thrive on speed and minimalism. However, managing clean architec
 
 ## 📖 Quick Start
 
-### 1. Initialize
+### 1. Install Globally
+To install the CLI directly on your machine, run:
 ```bash
-go run main.go init my_hexagonal_service
+go install github.com/rbaezc/gohexagen@latest
 ```
 
-### 2. Generate Resource
+### 2. Initialize a New Project
+Run the generator interactively:
+```bash
+gohexagen init my_hexagonal_service
+```
+
+### 3. Generate a Domain Slice
+Generate controllers, traits, models, and DB queries in one command:
 ```bash
 cd my_hexagonal_service
-go run main.go gen-resource User name:string email:string
+gohexagen gen-resource User name:string email:string
+```
+
+### 4. Run Tests
+```bash
+go test ./...
 ```
 
 Developed by **rbaezc**. Licensed to **Vortex Solutions**.
