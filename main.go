@@ -6,7 +6,7 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/spf13/cobra"
-	"github.com/vortexsolutions/gohexagen/commands"
+	"github.com/rbaezc/gohexagen/commands"
 )
 
 func main() {

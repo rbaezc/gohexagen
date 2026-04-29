@@ -1,4 +1,4 @@
-module github.com/vortexsolutions/gohexagen
+module github.com/rbaezc/gohexagen
 
 go 1.21
 
