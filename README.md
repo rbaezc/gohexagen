@@ -1,0 +1,32 @@
+# GoHexaGen: Clean Architecture Scaffolder for Go 🐹🛡️
+
+"Implicit boundaries. Unlimited performance."
+
+[![Architecture: Hexagonal](https://img.shields.io/badge/Architecture-Hexagonal-blueviolet)](#)
+[![Go: 1.21+](https://img.shields.io/badge/Go-1.21%2B-blue)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
+
+---
+
+## 🚀 Why GoHexaGen?
+
+Go applications thrive on speed and minimalism. However, managing clean architecture interfaces can sometimes feel like a manual task. **GoHexaGen** provides the essential scaffolding support to decouple components dynamically.
+
+### Key Features
+- **Primary Adapters**: Support for **Fiber**, **Gin**, and **Echo**.
+- **Implicit Ports**: True decoupling through standard Go interfaces.
+
+## 📖 Quick Start
+
+### 1. Initialize
+```bash
+go run main.go init my_hexagonal_service
+```
+
+### 2. Generate Resource
+```bash
+cd my_hexagonal_service
+go run main.go gen-resource User name:string email:string
+```
+
+Developed by **rbaezc**. Licensed to **Vortex Solutions**.

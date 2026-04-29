@@ -1,0 +1,6 @@
+# Go build artifacts
+/gohexagen
+/gohexagen.exe
+
+# Test coverage
+*.out
