@@ -110,6 +110,61 @@ func (u *Create%sUseCase) Execute(entity *models.%s) error {
 		return err
 	}
 
+	// 3.5 Application UseCase Unit Test (TDD-ready)
+	testContent := fmt.Sprintf(`package usecases
+
+import (
+	"errors"
+	"testing"
+	"%s/internal/domain/models"
+)
+
+type Mock%sRepository struct {
+	SaveFunc func(entity *models.%s) error
+}
+
+func (m *Mock%sRepository) FindByID(id string) (*models.%s, error) {
+	return nil, nil
+}
+
+func (m *Mock%sRepository) Save(entity *models.%s) error {
+	return m.SaveFunc(entity)
+}
+
+func TestCreate%sUseCase_Execute(t *testing.T) {
+	t.Run("should save entity successfully", func(t *testing.T) {
+		mockRepo := &Mock%sRepository{
+			SaveFunc: func(entity *models.%s) error {
+				return nil
+			},
+		}
+		useCase := NewCreate%sUseCase(mockRepo)
+
+		err := useCase.Execute(&models.%s{ID: "1"})
+		if err != nil {
+			t.Errorf("expected no error, got %%v", err)
+		}
+	})
+
+	t.Run("should return error when save fails", func(t *testing.T) {
+		mockRepo := &Mock%sRepository{
+			SaveFunc: func(entity *models.%s) error {
+				return errors.New("db error")
+			},
+		}
+		useCase := NewCreate%sUseCase(mockRepo)
+
+		err := useCase.Execute(&models.%s{ID: "1"})
+		if err == nil {
+			t.Error("expected error, got nil")
+		}
+	})
+}
+`, moduleName, structName, structName, structName, structName, structName, structName, structName, structName, structName, structName, structName, structName, structName, structName, structName)
+
+	testPath := filepath.Join("internal/application/usecases", snakeName+"_test.go")
+	_ = os.WriteFile(testPath, []byte(testContent), 0644)
+
 	// 4. Infrastructure HTTP Adapter
 	mainData, _ := os.ReadFile("cmd/main.go")
 	mainStr := string(mainData)
@@ -215,6 +270,39 @@ func (h *%sHandler) Create(c echo.Context) error {
 	_ = os.MkdirAll(filepath.Dir(httpPath), 0755)
 	_ = os.WriteFile(httpPath, []byte(httpContent), 0644)
 
-	fmt.Printf("Successfully generated domain models, ports, usecases, and HTTP handlers for %s!\n", structName)
+	// 5. Infrastructure DB Adapter
+	dbContent := fmt.Sprintf(`package db
+
+import (
+	"%s/internal/domain/models"
+	"gorm.io/gorm"
+)
+
+type GORM%sRepository struct {
+	DB *gorm.DB
+}
+
+func NewGORM%sRepository(db *gorm.DB) *GORM%sRepository {
+	return &GORM%sRepository{DB: db}
+}
+
+func (r *GORM%sRepository) FindByID(id string) (*models.%s, error) {
+	var entity models.%s
+	if err := r.DB.First(&entity, "id = ?", id).Error; err != nil {
+		return nil, err
+	}
+	return &entity, nil
+}
+
+func (r *GORM%sRepository) Save(entity *models.%s) error {
+	return r.DB.Save(entity).Error
+}
+`, moduleName, structName, structName, structName, structName, structName, structName, structName)
+
+	dbPath := filepath.Join("internal/infrastructure/adapters/db", snakeName+"_gorm.go")
+	_ = os.MkdirAll(filepath.Dir(dbPath), 0755)
+	_ = os.WriteFile(dbPath, []byte(dbContent), 0644)
+
+	fmt.Printf("Successfully generated domain models, ports, usecases, HTTP handlers, and DB repositories for %s!\n", structName)
 	return nil
 }

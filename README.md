@@ -15,6 +15,8 @@ Go applications thrive on speed and minimalism. However, managing clean architec
 ### Key Features
 - **Primary Adapters**: Support for **Fiber**, **Gin**, and **Echo**.
 - **Implicit Ports**: True decoupling through standard Go interfaces.
+- **Graceful Shutdowns**: OS Signal interception for safe teardowns.
+- **Enterprise Logging**: Standard `log/slog` structured reporting.
 
 ## 📖 Quick Start
 
